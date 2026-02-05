@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>喝水打卡 - 测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .link {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background: #4facfe;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .link:hover {
+            background: #3d9ce6;
+        }
+    </style>
+</head>
+<body>
+    <h1>💧 喝水打卡应用 - 测试页面</h1>
+
+    <div class="test-section">
+        <h2>应用状态</h2>
+        <div id="appStatus" class="status">检查中...</div>
+        <a href="index.html" class="link">打开应用</a>
+    </div>
+
+    <div class="test-section">
+        <h2>功能测试</h2>
+        <button onclick="testStorage()">测试存储功能</button>
+        <button onclick="testToday()">测试今日统计</button>
+        <button onclick="clearData()">清空测试数据</button>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>项目信息</h2>
+        <ul>
+            <li><strong>应用名称：</strong>喝水打卡</li>
+            <li><strong>版本：</strong>1.0.0</li>
+            <li><strong>包名：</strong>com.ruthirsty.app</li>
+            <li><strong>平台：</strong>Android, Browser</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>快速开始</h2>
+        <pre style="background: #f8f9fa; padding: 15px; border-radius: 4px; overflow-x: auto;">
+# 浏览器测试
+npm run serve
+
+# 或直接运行
+cordova run browser
+
+# Android 构建（需要配置 Android SDK）
+cordova build android
+cordova run android
+        </pre>
+    </div>
+
+    <script>
+        // Check if app files exist
+        window.onload = function() {
+            checkAppStatus();
+        };
+
+        function checkAppStatus() {
+            const statusDiv = document.getElementById('appStatus');
+
+            // Check if we can access the app
+            fetch('index.html')
+                .then(response => {
+                    if (response.ok) {
+                        statusDiv.className = 'status success';
+                        statusDiv.innerHTML = '✅ 应用文件正常，可以开始使用！';
+                    } else {
+                        statusDiv.className = 'status error';
+                        statusDiv.innerHTML = '❌ 无法访问应用文件';
+                    }
+                })
+                .catch(error => {
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = '❌ 检查失败: ' + error.message;
+                });
+        }
+
+        function testStorage() {
+            const resultsDiv = document.getElementById('testResults');
+            try {
+                // Test localStorage
+                const testKey = 'water_records_test';
+                const testData = [
+                    { id: Date.now(), time: new Date().toLocaleString() }
+                ];
+
+                localStorage.setItem(testKey, JSON.stringify(testData));
+                const retrieved = JSON.parse(localStorage.getItem(testKey));
+                localStorage.removeItem(testKey);
+
+                if (retrieved && retrieved.length === 1) {
+                    resultsDiv.innerHTML = '<div class="status success">✅ 存储功能测试通过</div>';
+                } else {
+                    resultsDiv.innerHTML = '<div class="status error">❌ 存储功能测试失败</div>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="status error">❌ 测试出错: ' + error.message + '</div>';
+            }
+        }
+
+        function testToday() {
+            const resultsDiv = document.getElementById('testResults');
+            try {
+                const today = new Date().toDateString();
+                const testDate = new Date();
+
+                if (testDate.toDateString() === today) {
+                    resultsDiv.innerHTML = '<div class="status success">✅ 日期功能正常<br>今天是: ' + today + '</div>';
+                } else {
+                    resultsDiv.innerHTML = '<div class="status error">❌ 日期功能异常</div>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="status error">❌ 测试出错: ' + error.message + '</div>';
+            }
+        }
+
+        function clearData() {
+            const resultsDiv = document.getElementById('testResults');
+            try {
+                localStorage.removeItem('water_records');
+                resultsDiv.innerHTML = '<div class="status success">✅ 测试数据已清空</div>';
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="status error">❌ 清空失败: ' + error.message + '</div>';
+            }
+        }
+    </script>
+</body>
+</html>

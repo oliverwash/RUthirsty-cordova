@@ -1,0 +1,29 @@
+{
+  "name": "com.ruthirsty.app",
+  "displayName": "喝水打卡",
+  "version": "1.0.0",
+  "description": "一个简单的喝水打卡应用，帮助你养成健康的喝水习惯。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "cordova run browser"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "water",
+    "health",
+    "checkin"
+  ],
+  "author": "RUthirsty Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "^14.0.1",
+    "cordova-browser": "^7.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android",
+      "browser"
+    ]
+  }
+}
