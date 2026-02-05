@@ -34,9 +34,30 @@ npm install
 
 ### 浏览器测试
 
+**推荐方式：使用 Live Server（支持热重载）**
+
 ```bash
+# 启动 live-server（后台运行，支持热重载）
+./start-server.sh
+
+# 查看服务器状态
+./status-server.sh
+
+# 停止服务器
+./stop-server.sh
+```
+
+访问地址：
+- 主应用：http://localhost:8000/
+- 测试页面：http://localhost:8000/test.html
+
+**其他方式：**
+
+```bash
+# 使用 npm 脚本
 npm run serve
-# 或
+
+# 或使用 Cordova
 cordova run browser
 ```
 
@@ -89,10 +110,28 @@ www/
 
 ## 开发说明
 
+### 热重载开发
+
+使用 live-server 进行开发，支持文件修改后自动刷新浏览器：
+
+```bash
+# 启动热重载服务器
+./start-server.sh
+
+# 修改 www/ 目录下的任何文件，浏览器会自动刷新
+# 支持的文件类型：HTML, CSS, JavaScript
+
+# 查看实时日志
+tail -f live-server.log
+```
+
+### 技术细节
+
 - 应用在 Cordova `deviceready` 事件后初始化
 - 支持浏览器模式测试（自动检测 Cordova 环境）
 - 今日统计会在跨天后自动重置
 - 所有数据存储在本地，不会上传到服务器
+- live-server 使用 nohup 后台运行，支持热重载
 
 ## 版本信息
 
